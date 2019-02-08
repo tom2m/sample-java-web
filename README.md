@@ -1,1 +1,1 @@
-# sample-java-web
+# Sample Spring Boot 2 Web Application
