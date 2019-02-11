@@ -20,4 +20,12 @@ node {
     openshiftDeploy depCfg: 'sample-java-app'
     openshiftVerifyDeployment depCfg: 'sample-java-app', replicaCount: 1, verifyReplicaCount: true
   }
+  stage('Functional tests') {
+    def curlResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=Hi", returnStdout: true).trim()
+    if("Hello" == curlResult) {
+        echo "SUCCESS"
+    } else {
+        error "System test failed"
+    }
+  }
 }
