@@ -23,9 +23,16 @@ node {
   stage('Functional tests') {
     def curlResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=Hi", returnStdout: true).trim()
     if("Hello" == curlResult) {
-        echo "SUCCESS"
+        echo "Hi request ends with SUCCESS"
     } else {
-        error "System test failed"
+        error "Hi request failed"
+    }
+	
+	curlResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=By", returnStdout: true).trim()
+    if("Goodbye" == curlResult) {
+        echo "By request ends with SUCCESS"
+    } else {
+        error "By request failed"
     }
   }
 }
