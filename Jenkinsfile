@@ -21,18 +21,25 @@ node {
     openshiftVerifyDeployment depCfg: 'sample-java-app', replicaCount: 1, verifyReplicaCount: true
   }
   stage('Functional tests') {
-    def curlResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=Hi", returnStdout: true).trim()
-    if("Hello" == curlResult) {
-        echo "Hi request ends with SUCCESS"
-    } else {
-        error "Hi request failed"
-    }
-	
-	curlResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=By", returnStdout: true).trim()
-    if("Goodbye" == curlResult) {
-        echo "By request ends with SUCCESS"
-    } else {
-        error "By request failed"
-    }
+	parallel (
+		"'Hi' request test": {
+			def hiResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=Hi", returnStdout: true).trim()
+			
+			if("Hello" == hiResult) {
+				echo "Hi request ends with SUCCESS"
+			} else {
+				error "Hi request failed"
+			}
+		},
+		"'By' request test": {
+			def byResult = sh(script : "curl http://sample-java-app-ci-cd-demo.1d35.starter-us-east-1.openshiftapps.com/talking/talk?word=By", returnStdout: true).trim()
+			
+			if("Goodbye" == byResult) {
+				echo "By request ends with SUCCESS"
+			} else {
+				error "By request failed"
+			}
+		}
+	)	
   }
 }
