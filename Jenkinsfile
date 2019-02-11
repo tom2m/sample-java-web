@@ -8,7 +8,6 @@ node {
     sh "mvn package -DskipTests"
   }
   stage('Build Image') {
-    unstash name:"jar"
     sh "oc start-build sample-java-app --from-file=target/spring-boot-web-app-1.0.0-SNAPSHOT.jar --follow"
   }
   stage('Deploy') {
