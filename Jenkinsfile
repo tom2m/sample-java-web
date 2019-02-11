@@ -7,16 +7,6 @@ node {
     git branch: 'ci_cd', url: 'https://github.com/tom2m/spring-boot-web-app.git'
     sh "mvn package -DskipTests"
   }
-  stage('Test') {
-    parallel(
-      "JUnits": {
-        sh "mvn test"
-      },
-      "Integration tests": {
-        sh "mvn verify -DskipUTs=true"
-      }
-    )
-  }
   stage('Build Image') {
     unstash name:"jar"
     sh "oc start-build sample-java-app --from-file=target/spring-boot-web-app-1.0.0-SNAPSHOT.jar --follow"
