@@ -11,7 +11,7 @@ public class ApiController {
 	
 	@GetMapping("/")
 	public String home() {
-		return "Java Spring Boot application is up and running. Hello from OpenShift :)";
+		return "Java Spring Boot application is up and running.";
 	}
 	
 	@GetMapping("/info")
